@@ -18,9 +18,6 @@ RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 && apt-get install -y php7.4-fpm \
     && apt-get install -y php7.4-mbstring php7.4-gd php7.4-bcmath php7.4-zip php7.4-xml php7.4-curl php7.4-intl php7.4-memcached php7.4-imap php7.4-pgsql php7.4-mysql php7.4-soap
 
-# Debug
-RUN apt-get install -y php7.4-xdebug
-
 # # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
  	&& ln -sf /dev/stderr /var/log/nginx/error.log
@@ -30,7 +27,7 @@ ADD startup.sh ./
 RUN chmod a+x startup.sh
 
 
-ADD php-development.ini /etc/php/7.4/fpm/php.ini
+ADD php-production.ini /etc/php/7.4/fpm/php.ini
 
 # Installing Composer globally
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
@@ -41,16 +38,9 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 # Install NVM
 SHELL ["/bin/bash", "--login", "-c"]
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.2/install.sh | bash
-RUN nvm install 10 \
-&& npm -g install npm \
-&& nvm install 12 \
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+RUN nvm install 12 \
 && npm -g install npm
-
-# SHELL ["/bin/sh", "-c"]
-RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-&& echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-&& apt update && apt install -y yarn
 
 # #Expose http, https
 EXPOSE 80 443

@@ -26,8 +26,17 @@ WORKDIR /root
 ADD startup.sh ./
 RUN chmod a+x startup.sh
 
-
 ADD php-production.ini /etc/php/7.4/fpm/php.ini
+
+#MySQL backups
+RUN mkdir /backups
+RUN mkdir /backups/data
+ADD mysqldump.sh /backups/
+RUN chmod a+x /backups/mysqldump.sh
+
+# Cronjobs
+RUN (crontab -l ; echo "0 4 * * * /backups/mysqldump.sh >> /root/mysql_backup.log 2>&1") | crontab
+
 
 # Installing Composer globally
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \

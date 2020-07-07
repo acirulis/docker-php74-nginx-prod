@@ -5,7 +5,7 @@ LABEL maintainer "andis.cirulis@whitedigital.eu"
 
 RUN apt update \
 && apt -y upgrade \
-&& apt -y install curl wget build-essential apt-transport-https software-properties-common tzdata unzip bzip2 cron vim git lsb-release ca-certificates nginx \
+&& apt -y install curl wget build-essential apt-transport-https software-properties-common tzdata default-mysql-client unzip bzip2 cron vim git lsb-release ca-certificates nginx \
 && apt install -y nasm pkg-config libpng-dev automake libtool autoconf \
 # Set Europe/Riga timezone
 && ln -fs /usr/share/zoneinfo/Europe/Riga /etc/localtime && dpkg-reconfigure -f noninteractive tzdata

@@ -42,12 +42,11 @@ RUN (crontab -l ; echo "0 4 * * * /backups/mysqldump.sh >> /root/mysql_backup.lo
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 && php composer-setup.php \
 &&  php -r "unlink('composer-setup.php');" \
-&& mv composer.phar /usr/local/bin/composer \
-&& composer global require hirak/prestissimo
+&& mv composer.phar /usr/local/bin/composer
 
 # Install NVM
 SHELL ["/bin/bash", "--login", "-c"]
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 RUN nvm install 12 \
 && npm -g install npm
 
